@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		var testURLs = {
+			"FB Pixel code URL"	: 	"https://connect.facebook.net/en_US/fbevents.js",
+			"FB IMG tag URL"	: 	"https://www.facebook.com/tr?id=0&ev=PageView&noscript=1",
+		};
+
+		document.addEventListener('DOMContentLoaded', init, false);
+
+		function init(){
+			adsBlockerTest(function(adBlockerTestResult){
+				document.getElementById('result').innerHTML = adBlockerTestResult;
+			});
+		}
+
+		function adsBlockerTestReq(urlCode){
+			var myInit = {
+				method: 'HEAD',
+				mode: 'no-cors'
+			};
+			var testUrlRequest = new Request(testURLs[urlCode], myInit);
+			return fetch(testUrlRequest).then(function(response) {
+				return response;
+			}).then(function(response) {
+				var result = urlCode + " is allowed, you should see events in chrome pixel helper extension.";
+				console.log(result);
+				console.log(response);
+				return result;
+			}).catch(function(e){
+				var result = urlCode + " is blocked by Ad Blockers in the chrome browser.";
+				console.log(result);
+				console.log(e);
+				return result;
+			});
+		}
+
+		function adsBlockerTest(callback){
+
+			let promiseArray = [];
+			for (var urlCode in testURLs){
+				promiseArray.push(adsBlockerTestReq(urlCode));
+			}
+			Promise.all(promiseArray).then(function(values) {
+				console.log(values.join("\n"));
+				callback(values.join("<br>"));
+			});
+		}
+	</script>
+	<title>FB Pixel and IMG tag events ad blocker test</title>
+</head>
+<body>
+	<div id="result"> <-- Test results would be updated here -->
+	</div>
+</body>
+</html>
