@@ -24,12 +24,12 @@
 			return fetch(testUrlRequest).then(function(response) {
 				return response;
 			}).then(function(response) {
-				var result = urlCode + " is allowed, you should see events in chrome pixel helper extension.";
+				var result = '<font color="green">' + urlCode + " is allowed, you should see events in chrome pixel helper extension.</font>";
 				console.log(result);
 				console.log(response);
 				return result;
 			}).catch(function(e){
-				var result = urlCode + " is blocked by Ad Blockers in the chrome browser.";
+				var result = '<font color="red">' + urlCode + " is blocked. (Maybe by Ad Blockers in the chrome browser?)</font>";
 				console.log(result);
 				console.log(e);
 				return result;
@@ -51,7 +51,7 @@
 	<title>FB Pixel and IMG tag events ad blocker test</title>
 </head>
 <body>
-	<div id="result"> <-- Test results would be updated here -->
-	</div>
+	<strong id="result"> <-- Test results would be updated here -->
+    </strong>
 </body>
 </html>
